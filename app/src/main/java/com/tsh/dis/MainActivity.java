@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import java.io.File;
 import java.util.Set;
+import android.content.Intent;
+import android.widget.Toast;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -57,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
-            case R.id.
         default:
         return super.onOptionsItemSelected(item);
         }
