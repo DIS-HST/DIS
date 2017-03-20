@@ -11,8 +11,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.File;
+import java.util.Set;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 
 public class MainActivity extends AppCompatActivity {
+    private BluetoothAdapter BA;
+    private Set<BluetoothDevice> pairedDevices;
     protected File extStorageAppBasePath;
 
     protected File extStorageAppCachePath;
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        BA = BluetoothAdapter.getDefaultAdapter();
     }
 
     @Override
@@ -54,5 +61,26 @@ public class MainActivity extends AppCompatActivity {
         default:
         return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void on(View v){
+        if (!BA.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void off(View v){
+        BA.disable();
+        Toast.makeText(getApplicationContext(), "Turned off" ,Toast.LENGTH_LONG).show();
+    }
+
+
+    public  void visible(View v){
+        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        startActivityForResult(getVisible, 0);
     }
 }
