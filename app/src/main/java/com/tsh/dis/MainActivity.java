@@ -11,23 +11,41 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Set;
 import android.content.Intent;
+
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 public class MainActivity extends AppCompatActivity {
+    Button b1,b2,b3,b4;
     private BluetoothAdapter BA;
     private Set<BluetoothDevice> pairedDevices;
+    ListView lv;
+
     protected File extStorageAppBasePath;
 
     protected File extStorageAppCachePath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+      //  b1 = (Button)findViewById(R.id.button);
+      //  b2 = (Button)findViewById(R.id.button2);
+      //  b3 = (Button)findViewById(R.id.button3);
+      //  b4 = (Button)findViewById(R.id.button4);
+
+        BA = BluetoothAdapter.getDefaultAdapter();
+      //  lv = (ListView)findViewById(R.id.listView);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -39,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        BA = BluetoothAdapter.getDefaultAdapter();
+
     }
 
     @Override
