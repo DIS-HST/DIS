@@ -19,7 +19,7 @@ public class DeviceScanActivity extends ListActivity {
 
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
-    ...
+
     private void scanLeDevice(final boolean enable) {
         if (enable) {
             // Stops scanning after a pre-defined scan period.
@@ -37,7 +37,5 @@ public class DeviceScanActivity extends ListActivity {
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
-        ...
-    }
-...
+     }
 }
