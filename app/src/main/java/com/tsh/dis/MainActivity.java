@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
-import java.util.Random;
 import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -27,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
     int num;
     boolean x;
+    boolean isStart;
+    CoordinatorLayout cL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        isStart=false;
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,11 +42,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                num=70;
-                heartRateNumber = (TextView) findViewById(R.id.hrNum);
-                heartRateNumber.setText(""+num);
-                mHandler.postDelayed(updateTask, 5000);
-                x=true;
+                if(isStart==false){
+                    isStart=true;
+                    num=70;
+                    heartRateNumber = (TextView) findViewById(R.id.hrNum);
+                    heartRateNumber.setText(""+num);
+                    mHandler.postDelayed(updateTask, 500);
+                    x=true;
+            }else{
+                    isStart=false;
+                    mHandler.postDelayed(updateTask, 0);
+                }
             }
         });
 
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
             heartRateNumber = (TextView) findViewById(R.id.hrNum);
             heartRateNumber.setText(""+num);
-            CoordinatorLayout cL=(CoordinatorLayout) findViewById(R.id.bg);
+            cL=(CoordinatorLayout) findViewById(R.id.bg);
             if(num>100){
                 cL.setBackgroundColor(0xffff0000);
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -96,13 +103,15 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 cL.setBackgroundColor(0xffffffff);
             }
-            mHandler.postDelayed(updateTask,1000);
+
+            if(isStart==true){
+                mHandler.postDelayed(updateTask,500);
+
+            }else{
+                heartRateNumber.setText("Stop");
+                cL.setBackgroundColor(0xffffffff);
+            }
         }
     };
-
-
-
-
-
 
 }
