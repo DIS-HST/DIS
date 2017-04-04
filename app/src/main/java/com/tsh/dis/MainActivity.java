@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         if (BA == null || !BA.isEnabled()) {
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, 0);
-            //startActivityForResult(turnOn, REQUEST_ENABLE_BT);
             Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
@@ -126,23 +125,4 @@ public class MainActivity extends AppCompatActivity {
 
         lv.setAdapter(adapter);
     }
-
-    /**
-    // Device scan callback.
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
-                @Override
-                public void onLeScan(final BluetoothDevice device, int rssi,
-                                     byte[] scanRecord) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mLeDeviceListAdapter.addDevice(device);
-                            mLeDeviceListAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            };
-    */
-
 }
