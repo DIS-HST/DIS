@@ -1,60 +1,40 @@
 package com.tsh.dis;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Set;
-import android.content.Intent;
-import android.content.Context;
-
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.os.Handler;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
+import android.util.Log;
+import android.os.Vibrator;
+import android.content.Context;
+import android.media.MediaPlayer;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothDevice;
+
+
 
 public class MainActivity extends AppCompatActivity {
-    private BluetoothAdapter BA;
-    private Set<BluetoothDevice> pairedDevices;
-    //private LeDeviceListAdapter mLeDeviceListAdapter;
-
+    TextView heartRateNumber;
     ListView lv;
-
-    // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 10000;
-
-    // Initializes Bluetooth adapter.
-    final BluetoothManager bluetoothManager =
-            (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-
-    protected File extStorageAppBasePath;
-
-    protected File extStorageAppCachePath;
+    private Handler mHandler = new Handler();
+    int num;
+    boolean x;
+    boolean isStart;
+    CoordinatorLayout cL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        isStart = false;
 
-        // Initializes Bluetooth adapter.
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        BA = bluetoothManager.getAdapter();
-
-        //BA = BluetoothAdapter.getDefaultAdapter();
-      //  lv = (ListView)findViewById(R.id.listView);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,8 +43,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (isStart == false) {
+                    isStart = true;
+                    num = 70;
+                    heartRateNumber = (TextView) findViewById(R.id.hrNum);
+                    heartRateNumber.setText("" + num);
+                    mHandler.postDelayed(updateTask, 500);
+                    x = true;
+                } else {
+                    isStart = false;
+                    mHandler.postDelayed(updateTask, 0);
+                }
             }
         });
 
@@ -87,9 +76,43 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
-        default:
-        return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
+    // This updates number in screen during working time
+    private Runnable updateTask = new Runnable() {
+        public void run() {
+            Log.d(getString(R.string.app_name) + " ChatList.updateTask()",
+                    "updateTask run!");
+            if (x == true) {
+                num = num + 1;
+                if (num > 108) {
+                    x = false;
+                }
+            } else {
+                num = num - 1;
+            }
+            heartRateNumber = (TextView) findViewById(R.id.hrNum);
+            heartRateNumber.setText("" + num);
+            cL = (CoordinatorLayout) findViewById(R.id.bg);
+            if (num > 100) {
+                cL.setBackgroundColor(0xffff0000);
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(400);
+            } else if (num > 80 && num < 101) {
+                cL.setBackgroundColor(0xffffff00);
+            } else {
+                cL.setBackgroundColor(0xffffffff);
+            }
 
+            if (isStart == true) {
+                mHandler.postDelayed(updateTask, 500);
+
+            } else {
+                heartRateNumber.setText("Stop");
+                cL.setBackgroundColor(0xffffffff);
+            }
+        }
+    };
 }
