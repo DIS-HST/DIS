@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     isStart = true;
                     num = 70;
                     heartRateNumber = (TextView) findViewById(R.id.hrNum);
-                    heartRateNumber.setText("" + num);
+                    heartRateNumber.setText("Start");
                     mHandler.postDelayed(updateTask, 500);
                     x = true;
                 } else {
