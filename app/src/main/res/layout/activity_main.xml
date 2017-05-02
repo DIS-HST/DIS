@@ -1,10 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:padding="16dp"
     android:orientation="vertical"
     tools:context="com.blogspot.android_er.androidblegatt.MainActivity">
+
+
+    tools:context="com.tsh.dis.MainActivity">
+
 
 <TextView
         android:layout_width="wrap_content"
@@ -32,4 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
 </LinearLayout>
+

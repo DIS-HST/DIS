@@ -13,6 +13,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.util.Log;
+import android.os.Vibrator;
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -45,10 +59,20 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private static final long SCAN_PERIOD = 10000;
 
+
+    TextView heartRateNumber;
+    ListView lv;
+    private Handler mHandler = new Handler();
+    int num;
+    boolean x;
+    boolean isStart;
+    CoordinatorLayout cL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        isStart = false;
 
         // Check if BLE is supported on the device.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -59,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         getBluetoothAdapterAndLeScanner();
-
         // Checks if Bluetooth is supported on the device.
         if (mBluetoothAdapter == null) {
             Toast.makeText(this,
@@ -72,8 +95,22 @@ public class MainActivity extends AppCompatActivity {
         btnScan = (Button)findViewById(R.id.scan);
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 scanLeDevice(true);
+            public void onClick(View view) {
+                if (isStart == false) {
+                    isStart = true;
+                    num = 70;
+                    heartRateNumber = (TextView) findViewById(R.id.hrNum);
+                    heartRateNumber.setText("Start");
+                    mHandler.postDelayed(updateTask, 500);
+                    x = true;
+                } else {
+                    isStart = false;
+                    mHandler.postDelayed(updateTask, 0);
+                }
+
             }
         });
         listViewLE = (ListView)findViewById(R.id.lelist);
@@ -155,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+
     protected void onResume() {
         super.onResume();
 
@@ -264,6 +302,52 @@ public class MainActivity extends AppCompatActivity {
             if(!listBluetoothDevice.contains(device)){
                 listBluetoothDevice.add(device);
                 listViewLE.invalidateViews();
+              
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        ;
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    // This updates number in screen during working time
+    private Runnable updateTask = new Runnable() {
+        public void run() {
+            Log.d(getString(R.string.app_name) + " ChatList.updateTask()",
+                    "updateTask run!");
+            if (x == true) {
+                num = num + 1;
+                if (num > 108) {
+                    x = false;
+                }
+            } else {
+                num = num - 1;
+            }
+            heartRateNumber = (TextView) findViewById(R.id.hrNum);
+            heartRateNumber.setText("" + num);
+            cL = (CoordinatorLayout) findViewById(R.id.bg);
+            if (num > 100) {
+                cL.setBackgroundColor(0xffff0000);
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(400);
+            } else if (num > 80 && num < 101) {
+                cL.setBackgroundColor(0xffffff00);
+            } else {
+                cL.setBackgroundColor(0xffffffff);
+            }
+
+            if (isStart == true) {
+                mHandler.postDelayed(updateTask, 500);
+
+            } else {
+                heartRateNumber.setText("Stop");
+                cL.setBackgroundColor(0xffffffff);
             }
         }
     };
