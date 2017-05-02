@@ -1,33 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tsh.dis.MainActivity">
+    android:padding="16dp"
+    android:orientation="vertical"
+    tools:context="com.blogspot.android_er.androidblegatt.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/holo_red_light"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:layout_gravity="center_horizontal"
+        android:autoLink="web"
+        android:text="http://android-er.blogspot.com/"
+        android:textStyle="bold" />
 
-    <include layout="@layout/content_main" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:autoLink="web"
+        android:text="Bluetooth LE Gatt Example"
+        android:textStyle="italic" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan"/>
+    <ListView
+        android:id="@+id/lelist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
