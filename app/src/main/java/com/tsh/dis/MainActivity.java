@@ -3,7 +3,6 @@ package com.tsh.dis;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,9 +14,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.os.Vibrator;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.SystemClock;
-
 
 
 
@@ -25,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView heartRateNumber;
     TextView timer;
     ListView lv;
-    private Handler mHandler = new Handler();
+    private Handler pHandler = new Handler();
     int num;
     boolean x;
     boolean isStart;
@@ -47,21 +44,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isStart==false){
-                    isStart=true;
-                    num=70;
-                    heartRateNumber = (TextView) findViewById(R.id.hrNum);
-                    timer = (TextView) findViewById(R.id.timer);
-                    timer.setText("00:00:00:00");
-                    heartRateNumber.setText(""+num);
-                    StartTime = SystemClock.uptimeMillis();
-                    mHandler.postDelayed(stopwatch, 0);
-                    mHandler.postDelayed(updateTask, 500);
-                    x=true;
-            }else{
-                    isStart=false;
-                    mHandler.postDelayed(updateTask, 0);
-                }
+                timestart();
+
             }
         });
 
@@ -110,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     + String.format("%02d", Seconds) + ":"
                     + String.format("%02d", MilliSeconds));
             if (isStart == true) {
-                mHandler.postDelayed(this, 0);
+                pHandler.postDelayed(this, 0);
             }
         }
     };
@@ -140,12 +124,29 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if(isStart==true){
-                mHandler.postDelayed(updateTask,500);
+                pHandler.postDelayed(updateTask,500);
 
             }else{
                 heartRateNumber.setText("Stop");
                 cL.setBackgroundColor(0xffffffff);
             }
+        }
+    };
+    private void timestart(){
+        if(isStart==false){
+            isStart=true;
+            num=70;
+            heartRateNumber = (TextView) findViewById(R.id.hrNum);
+            timer = (TextView) findViewById(R.id.timer);
+            timer.setText("00:00:00:00");
+            heartRateNumber.setText(""+num);
+            StartTime = SystemClock.uptimeMillis();
+            pHandler.postDelayed(stopwatch, 0);
+            pHandler.postDelayed(updateTask, 500);
+            x=true;
+        }else{
+            isStart=false;
+            pHandler.postDelayed(updateTask, 0);
         }
     };
 }
