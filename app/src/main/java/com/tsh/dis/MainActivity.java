@@ -16,24 +16,29 @@ import android.util.Log;
 import android.os.Vibrator;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.SystemClock;
 
 
 
 
 public class MainActivity extends AppCompatActivity {
     TextView heartRateNumber;
+    TextView timer;
     ListView lv;
     private Handler mHandler = new Handler();
     int num;
     boolean x;
     boolean isStart;
     CoordinatorLayout cL;
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
+    int Seconds, Minutes, MilliSeconds, Hours ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         isStart=false;
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
                     isStart=true;
                     num=70;
                     heartRateNumber = (TextView) findViewById(R.id.hrNum);
+                    timer = (TextView) findViewById(R.id.timer);
+                    timer.setText("00:00:00:00");
                     heartRateNumber.setText(""+num);
+                    StartTime = SystemClock.uptimeMillis();
+                    mHandler.postDelayed(stopwatch, 0);
                     mHandler.postDelayed(updateTask, 500);
                     x=true;
             }else{
@@ -79,6 +88,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
         }
     }
+    public Runnable stopwatch = new Runnable() {
+
+        public void run() {
+
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+
+            UpdateTime = TimeBuff + MillisecondTime;
+
+            Seconds = (int) (UpdateTime / 1000);
+
+            Minutes = Seconds / 60;
+
+            Hours = Minutes / 60;
+
+            Seconds = Seconds % 60;
+
+            MilliSeconds = (int) (UpdateTime % 1000);
+            timer = (TextView) findViewById(R.id.timer);
+            timer.setText("" + Hours + ":" + Minutes + ":"
+                    + String.format("%02d", Seconds) + ":"
+                    + String.format("%02d", MilliSeconds));
+            if (isStart == true) {
+                mHandler.postDelayed(this, 0);
+            }
+        }
+    };
     private Runnable updateTask = new Runnable () {
         public void run() {
             Log.d(getString(R.string.app_name) + " ChatList.updateTask()",
