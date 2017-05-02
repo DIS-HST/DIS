@@ -42,26 +42,20 @@ public class MainActivity extends AppCompatActivity {
     CoordinatorLayout cL;
     long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
     int Seconds, Minutes, MilliSeconds, Hours ;
-
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothLeScanner mBluetoothLeScanner;
-
     private boolean mScanning;
-
     private static final int RQS_ENABLE_BLUETOOTH = 1;
-
     Button btnScan;
     ListView listViewLE;
-
     List<BluetoothDevice> listBluetoothDevice;
     ListAdapter adapterLeScanResult;
-
-
     private Handler mHandler;
     private static final long SCAN_PERIOD = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         isStart=false;
@@ -239,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     mBluetoothLeScanner.stopScan(scanCallback);
                     listViewLE.invalidateViews();
-
+                    
                     Toast.makeText(MainActivity.this,
                             "Scan timeout",
                             Toast.LENGTH_LONG).show();
@@ -257,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             mScanning = false;
             btnScan.setEnabled(true);
         }
-    }
+    };
 
     private ScanCallback scanCallback = new ScanCallback() {
         @Override
@@ -365,5 +359,5 @@ public class MainActivity extends AppCompatActivity {
         }else{
             isStart=false;
             pHandler.postDelayed(updateTask, 0);
-        };
+        }};
 }

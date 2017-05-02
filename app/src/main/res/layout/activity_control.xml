@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context="com.blogspot.android_er.androidblegatt.ControlActivity">
+    tools:context="com.tsh.dis.ControlActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+
 
     <TextView
         android:id="@+id/textDeviceName"
